@@ -5,6 +5,8 @@
 import { useAuth } from '@/utils/context/authContext';
 import { useEffect, useState } from 'react';
 
+const dbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
+
 function Home() {
   const [uselessFact, setUselessFact] = useState({});
   const { user } = useAuth();
@@ -16,12 +18,21 @@ function Home() {
     setUselessFact(fact);
   };
 
-  const selectResponse = (boolean) => {
+  const selectResponse = async (boolean) => {
+    const val = boolean ? 'Yes' : 'No';
     const obj = {
       userId: user.uid,
-      permaLink: uselessFact.permaLink,
-      response: boolean,
+      text: uselessFact.text,
     };
+
+    await fetch(`${dbUrl}/response${val}.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(obj),
+    });
+
     fetchFact();
     return obj;
   };
