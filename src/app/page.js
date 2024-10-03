@@ -4,8 +4,7 @@
 
 import { useAuth } from '@/utils/context/authContext';
 import { useEffect, useState } from 'react';
-
-const dbUrl = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL;
+import { postFact, updateFact } from '../api/facts';
 
 function Home() {
   const [uselessFact, setUselessFact] = useState({});
@@ -25,13 +24,8 @@ function Home() {
       text: uselessFact.text,
     };
 
-    await fetch(`${dbUrl}/response${val}.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(obj),
-    });
+    const response = await postFact(obj, val);
+    await updateFact(response.name, val);
 
     fetchFact();
     return obj;
