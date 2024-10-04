@@ -9,7 +9,7 @@ export default async function ResponseYesPage({ params, searchParams }) {
   return (
     <div>
       {Object.values(facts).map((fact) => (
-        <FactCard key={fact.firebaseKey} fact={fact.text} />
+        <FactCard key={fact.firebaseKey} fact={fact} />
       ))}
     </div>
   );
