@@ -25,7 +25,7 @@ function Home() {
     };
 
     const response = await postFact(obj, val);
-    await updateFact(response.name, val);
+    await updateFact({ firebaseKey: response.name }, val);
 
     fetchFact();
     return obj;
