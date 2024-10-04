@@ -4,10 +4,16 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from './Form';
+import { deleteFact } from '../api/facts';
 
-function FactCard({ fact }) {
+function FactCard({ fact, deleteFunc }) {
   const [localFact, setLocalFact] = useState(fact);
   const [editMode, setEditMode] = useState(false);
+
+  const deleteIndFact = () => {
+    deleteFact(fact.firebaseKey, 'Yes').then(() => deleteFunc());
+    deleteFact(fact.firebaseKey, 'No').then(() => deleteFunc());
+  };
 
   return (
     <Card>
@@ -29,7 +35,7 @@ function FactCard({ fact }) {
               <button type="button" className="btn btn-secondary" onClick={() => setEditMode(true)}>
                 EDIT FACT
               </button>
-              <button type="button" className="btn btn-danger">
+              <button type="button" className="btn btn-danger" onClick={deleteIndFact}>
                 DELETE FACT
               </button>
             </div>
@@ -42,6 +48,7 @@ function FactCard({ fact }) {
 
 FactCard.propTypes = {
   fact: PropTypes.string.isRequired,
+  deleteFunc: PropTypes.func.isRequired,
 };
 
 export default FactCard;
