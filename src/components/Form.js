@@ -10,7 +10,7 @@ const initialState = {
   name: '',
 };
 
-export default function Form({ obj = initialState }) {
+export default function Form({ obj = initialState, func }) {
   const { user } = useAuth();
   const [factDetails, setFactDetails] = useState(obj);
 
@@ -31,8 +31,8 @@ export default function Form({ obj = initialState }) {
     e.preventDefault();
 
     if (factDetails.firebaseKey) {
-      // UPDATE FACT
       await updateFact(factDetails, 'Yes');
+      func(factDetails);
     } else {
       const response = await postFact(
         {
@@ -65,4 +65,5 @@ export default function Form({ obj = initialState }) {
 
 Form.propTypes = {
   obj: PropTypes.shape.isRequired,
+  func: PropTypes.func.isRequired,
 };
